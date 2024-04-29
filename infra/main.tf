@@ -1,4 +1,4 @@
 provider "aws" {
   region = "sa-east-1"
-  profile = {{ secrets.AWS_PROFILE_NAME }}
+  profile = var.aws_profile
 }

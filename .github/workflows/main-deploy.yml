@@ -9,14 +9,15 @@ jobs:
     if:
       github.event.pull_request.merged == true && exists('config.yml')
     runs-on: ubuntu-latest
+    env:
+      AWS_PROFILE: $ {{ secrets.AWS_PROFILE_NAME }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-      - name: Configure AWS Credentials
-        run: aws configure set profile $ {{ secrets.AWS_PROFILE_NAME }}
+      - name: Terraform Init
+        run: terraform init
       - name: Terraform Apply
         run: terraform apply -auto-approve
-
       - name: Check Config File
         run: |
           if [ ($cat config.yml | grep "destroy: true" | wc -1) -gt 0]; then
