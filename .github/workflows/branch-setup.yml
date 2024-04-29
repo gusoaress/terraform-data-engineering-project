@@ -11,12 +11,18 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
+
+      - name: Change to infra directory
+        run: cd infra
+
       - name: Configure AWS Credentials
-        run: aws configure set profile ${AWS_PROFILE_NAME}
+        run: aws configure set profile "${{ secrets.AWS_PROFILE_NAME }}"
         env:
           AWS_PROFILE_NAME: ${{ secrets.AWS_PROFILE_NAME }}
+
       - name: Terraform Init
         run: terraform init
+
       - name: Terraform Plan
         run: terraform plan -out=tfplan
 
