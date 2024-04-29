@@ -12,13 +12,15 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
       - name: Configure AWS Credentials
-        run: aws configure set profile $ {{ secrets.AWS_PROFILE_NAME }}
+        run: aws configure set profile ${AWS_PROFILE_NAME}
+        env:
+          AWS_PROFILE_NAME: ${{ secrets.AWS_PROFILE_NAME }}
       - name: Terraform Init
         run: terraform init
       - name: Terraform Plan
         run: terraform plan -out=tfplan
 
-      - name: Open Push Request
+      - name: Open Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
